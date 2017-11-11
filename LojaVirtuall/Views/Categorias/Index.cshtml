@@ -1,0 +1,57 @@
+﻿@model IEnumerable<LojaVirtuall.Models.Categoria>
+
+@{
+    ViewBag.Title = "Categorias";
+}
+
+<h2 class="center-block text-center">Categorias</h2>
+<hr />
+
+<div class="btnCadastro-wrapper">
+    <a href="/Categorias/Create/" class="btn btn-default">Cadastrar Categoria</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CriadoEm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModificadoEm)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CriadoEm)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModificadoEm)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.CategoriaID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Detalhes", "Details", new { id = item.CategoriaID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.CategoriaID }, new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
