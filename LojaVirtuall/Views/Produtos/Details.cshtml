@@ -1,0 +1,89 @@
+﻿@model LojaVirtuall.Models.Produto
+
+@{
+    ViewBag.Title = "Detalhes do Produto";
+}
+
+<h2 class="center-block text-center">Detalhes do Produto</h2>
+<hr />
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Preco)
+        </dt>
+
+        <dd>
+            @String.Format("R$ {0}", Html.DisplayFor(model => model.Preco).ToString())
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Quantidade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Categoria)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Categoria.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fornecedor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fornecedor.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ativo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ativo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CriadoEm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CriadoEm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModificadoEm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModificadoEm)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ProdutoID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+</p>

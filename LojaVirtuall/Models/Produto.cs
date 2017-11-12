@@ -26,12 +26,13 @@ namespace LojaVirtuall.Models
         [Required(ErrorMessage = "O campo 'Quantidade' está vazio.")]
         public int Quantidade { get; set; }
 
+        [DefaultValue(true)]
+        public bool Ativo { get; set; }
+
         [DisplayName("Criado Em")]
-        [Required]
         public DateTime? CriadoEm { get; set; }
 
         [DisplayName("Modificado Em")]
-        [Required]
         public DateTime? ModificadoEm { get; set; }
 
         public int CategoriaID { get; set; }

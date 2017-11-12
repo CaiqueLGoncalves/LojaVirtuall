@@ -1,0 +1,74 @@
+﻿@model IEnumerable<LojaVirtuall.Models.Produto>
+
+@{
+    ViewBag.Title = "Produtos";
+}
+
+<h2 class="center-block text-center">Produtos</h2>
+<hr />
+
+<div class="btnCadastro-wrapper">
+    <a href="/Produtos/Create/" class="btn btn-default">Cadastrar Produto</a>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fornecedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @String.Format("R$ {0}", Html.DisplayFor(modelItem => item.Preco).ToString())
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Detalhes", "Details", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
