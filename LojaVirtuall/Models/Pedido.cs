@@ -19,6 +19,9 @@ namespace LojaVirtuall.Models
         [ForeignKey("UsuarioID")]
         public Cliente Cliente { get; set; }
 
+        [DefaultValue(true)]
+        public bool Ativo { get; set; }
+
         public virtual ICollection<ItemPedido> Itens { get; set; }
 
         [DisplayName("Modificado Em")]

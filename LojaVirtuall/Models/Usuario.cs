@@ -27,6 +27,9 @@ namespace LojaVirtuall.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Senha' está vazio.")]
         public string Senha { get; set; }
 
+        [DefaultValue(true)]
+        public bool Ativo { get; set; }
+
         [DisplayName("Criado Em")]
         public DateTime? CriadoEm { get; set; }
 
