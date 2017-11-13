@@ -18,6 +18,12 @@
 
 .control-label, .dl-horizontal dt { text-align: left !important; }
 
-.btnCadastro-wrapper, .pergunta-exclusao {
-    margin-bottom: 21px;
+.btnCadastro-wrapper { margin-bottom: 35px; }
+
+.pergunta-exclusao { margin-bottom: 21px; }
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+    height: 100px;
 }

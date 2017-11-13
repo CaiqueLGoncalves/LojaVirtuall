@@ -29,12 +29,6 @@ namespace LojaVirtuall.Models
         [DefaultValue(true)]
         public bool Ativo { get; set; }
 
-        [DisplayName("Criado Em")]
-        public DateTime? CriadoEm { get; set; }
-
-        [DisplayName("Modificado Em")]
-        public DateTime? ModificadoEm { get; set; }
-
         public int CategoriaID { get; set; }
 
         [ForeignKey("CategoriaID")]
@@ -44,5 +38,17 @@ namespace LojaVirtuall.Models
 
         [ForeignKey("FornecedorID")]
         public Fornecedor Fornecedor { get; set; }
+
+        [DisplayName("Criado Em")]
+        public DateTime? CriadoEm { get; set; }
+
+        [DisplayName("Modificado Em")]
+        public DateTime? ModificadoEm { get; set; }
+
+        [DisplayName("Criado Por")]
+        public Administrador CriadoPor { get; set; }
+
+        [DisplayName("Modificado Por")]
+        public Administrador ModificadoPor { get; set; }
     }
 }

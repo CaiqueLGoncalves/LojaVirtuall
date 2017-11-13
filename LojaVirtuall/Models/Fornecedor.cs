@@ -14,12 +14,18 @@ namespace LojaVirtuall.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Nome' está vazio.")]
         public string Nome { get; set; }
 
+        public virtual ICollection<Produto> Produtos { get; set; }
+
         [DisplayName("Criado Em")]
         public DateTime? CriadoEm { get; set; }
 
         [DisplayName("Modificado Em")]
         public DateTime? ModificadoEm { get; set; }
 
-        public virtual ICollection<Produto> Produtos { get; set; }
+        [DisplayName("Criado Por")]
+        public Administrador CriadoPor { get; set; }
+
+        [DisplayName("Modificado Por")]
+        public Administrador ModificadoPor { get; set; }
     }
 }
