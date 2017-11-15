@@ -1,0 +1,86 @@
+﻿@model IEnumerable<LojaVirtuall.Models.Administrador>
+
+@{
+    ViewBag.Title = "Administradores do Sistema";
+}
+
+<h2 class="center-block text-center">Administradores do Sistema</h2>
+<hr />
+
+<div class="btnCadastro-wrapper">
+    <a href="/Administradores/Create/" class="btn btn-default">Cadastrar Administrador</a>
+</div>
+
+<table id="tbAdministradores" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Login)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                    @(item.Ativo ? "Ativo" : "Inativo")
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.UsuarioID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Detalhes", "Details", new { id = item.UsuarioID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.UsuarioID }, new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section styles {
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbAdministradores").DataTable({
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
+                },
+                responsive: true,
+                columns: [
+                    { responsivePriority: 0 },
+                    { responsivePriority: 2 },
+                    { responsivePriority: 3 },
+                    { responsivePriority: 4 },
+                    { responsivePriority: 1 }
+                ],
+                columnDefs: [
+                    { orderable: false, targets: [4] }
+                ],
+            });
+        });
+    </script>
+}

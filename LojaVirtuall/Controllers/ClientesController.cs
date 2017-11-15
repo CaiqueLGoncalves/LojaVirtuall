@@ -3,115 +3,115 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using LojaVirtuall.Models;
-using System;
 using System.Web.UI;
+using System;
 
 namespace LojaVirtuall.Controllers
 {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-    public class FornecedoresController : Controller
+    public class ClientesController : Controller
     {
         private Contexto db = new Contexto();
 
-        // GET: Fornecedores
+        // GET: Clientes
         public ActionResult Index()
         {
-            return View(db.Fornecedor.ToList());
+            return View(db.Cliente.ToList());
         }
 
-        // GET: Fornecedores/Details/5
+        // GET: Clientes/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
+            Cliente cliente = db.Cliente.Find(id);
+            if (cliente == null)
             {
                 return HttpNotFound();
             }
-            return View(fornecedor);
+            return View(cliente);
         }
 
-        // GET: Fornecedores/Create
+        // GET: Clientes/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Fornecedores/Create
+        // POST: Clientes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FornecedorID, Nome")] Fornecedor fornecedor)
+        public ActionResult Create([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                fornecedor.CriadoEm = DateTime.Now;
-                fornecedor.ModificadoEm = DateTime.Now;
+                cliente.CriadoEm = DateTime.Now;
+                cliente.ModificadoEm = DateTime.Now;
 
-                db.Fornecedor.Add(fornecedor);
+                db.Cliente.Add(cliente);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(fornecedor);
+            return View(cliente);
         }
 
-        // GET: Fornecedores/Edit/5
+        // GET: Clientes/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
+            Cliente cliente = db.Cliente.Find(id);
+            if (cliente == null)
             {
                 return HttpNotFound();
             }
-            return View(fornecedor);
+            return View(cliente);
         }
 
-        // POST: Fornecedores/Edit/5
+        // POST: Clientes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FornecedorID, Nome")] Fornecedor fornecedor)
+        public ActionResult Edit([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                fornecedor.CriadoEm = DateTime.Now;
-                fornecedor.ModificadoEm = DateTime.Now;
+                cliente.CriadoEm = DateTime.Now;
+                cliente.ModificadoEm = DateTime.Now;
 
-                db.Entry(fornecedor).State = EntityState.Modified;
+                db.Entry(cliente).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(fornecedor);
+            return View(cliente);
         }
 
-        // GET: Fornecedores/Delete/5
+        // GET: Clientes/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
+            Cliente cliente = db.Cliente.Find(id);
+            if (cliente == null)
             {
                 return HttpNotFound();
             }
-            return View(fornecedor);
+            return View(cliente);
         }
 
-        // POST: Fornecedores/Delete/5
+        // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            db.Fornecedor.Remove(fornecedor);
+            Cliente cliente = db.Cliente.Find(id);
+            db.Cliente.Remove(cliente);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

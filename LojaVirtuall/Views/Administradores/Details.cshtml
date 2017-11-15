@@ -1,10 +1,10 @@
-﻿@model LojaVirtuall.Models.Produto
+﻿@model LojaVirtuall.Models.Administrador
 
 @{
-    ViewBag.Title = "Detalhes do Produto";
+    ViewBag.Title = "Detalhes do Administrador";
 }
 
-<h2 class="center-block text-center">Detalhes do Produto</h2>
+<h2 class="center-block text-center">Detalhes do Administrador</h2>
 <hr />
 
 <div>
@@ -18,43 +18,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Descricao)
+            @Html.DisplayNameFor(model => model.Email)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Descricao)
+            @Html.DisplayFor(model => model.Email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Preco)
+            @Html.DisplayNameFor(model => model.Login)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Preco)
+            @Html.DisplayFor(model => model.Login)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Quantidade)
+            @Html.DisplayNameFor(model => model.Senha)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Quantidade)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Categoria.Nome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Fornecedor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Fornecedor.Nome)
+            ********
         </dd>
 
         <dt>
@@ -80,10 +64,9 @@
         <dd>
             @Html.DisplayFor(model => model.ModificadoEm)
         </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.ProdutoID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Editar", "Edit", new { id = Model.UsuarioID }, new { @class = "btn btn-default" })
     @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
 </p>

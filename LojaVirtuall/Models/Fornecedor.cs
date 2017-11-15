@@ -16,9 +16,11 @@ namespace LojaVirtuall.Models
 
         public virtual ICollection<Produto> Produtos { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Criado Em")]
         public DateTime? CriadoEm { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Modificado Em")]
         public DateTime? ModificadoEm { get; set; }
 

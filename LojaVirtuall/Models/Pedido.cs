@@ -11,6 +11,7 @@ namespace LojaVirtuall.Models
         [Key]
         public int PedidoID { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Data do Pedido")]
         public DateTime? DataPedido { get; set; }
 
@@ -24,9 +25,11 @@ namespace LojaVirtuall.Models
 
         public virtual ICollection<ItemPedido> Itens { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Modificado Em")]
         public DateTime? ModificadoEm { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Modificado Por")]
         public Administrador ModificadorPor { get; set; }
     }

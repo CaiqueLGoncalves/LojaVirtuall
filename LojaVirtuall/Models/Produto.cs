@@ -17,6 +17,7 @@ namespace LojaVirtuall.Models
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
 
+        [DataType(DataType.Currency)]
         [DisplayName("Preço")]
         [Required(ErrorMessage = "O campo 'Preço' está vazio.")]
         public double Preco { get; set; }
@@ -39,9 +40,11 @@ namespace LojaVirtuall.Models
         [ForeignKey("FornecedorID")]
         public Fornecedor Fornecedor { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Criado Em")]
         public DateTime? CriadoEm { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Modificado Em")]
         public DateTime? ModificadoEm { get; set; }
 

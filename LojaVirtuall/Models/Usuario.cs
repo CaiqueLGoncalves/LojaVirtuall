@@ -13,6 +13,9 @@ namespace LojaVirtuall.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Nome' está vazio.")]
         public string Nome { get; set; }
 
+        [DisplayName("E-mail")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Este formato de e-mail não é válido.")]
         [StringLength(100, ErrorMessage = "O campo 'E-mail' deve ter no máximo 100 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'E-mail' está vazio.")]
         public string Email { get; set; }
@@ -22,17 +25,28 @@ namespace LojaVirtuall.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Login' está vazio.")]
         public string Login { get; set; }
 
+        [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage = "O campo 'Senha' deve ter no mínimo 8 caracteres.")]
         [StringLength(32, ErrorMessage = "O campo 'Senha' deve ter no máximo 32 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Senha' está vazio.")]
         public string Senha { get; set; }
 
+        [DataType(DataType.Password)]
+        [DisplayName("Confirmação de Senha")]
+        [Compare("Senha", ErrorMessage = "A senha e a confirmação de senha devem ser iguais.")]
+        [MinLength(8, ErrorMessage = "O campo 'Confirmação de Senha' deve ter no mínimo 8 caracteres.")]
+        [StringLength(32, ErrorMessage = "O campo 'Confirmação de Senha' deve ter no máximo 32 caracteres.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Confirmação de Senha' está vazio.")]
+        public string ConfirmacaoSenha { get; set; }
+
         [DefaultValue(true)]
         public bool Ativo { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Criado Em")]
         public DateTime? CriadoEm { get; set; }
 
+        [DataType(DataType.DateTime)]
         [DisplayName("Modificado Em")]
         public DateTime? ModificadoEm { get; set; }
     }

@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using LojaVirtuall.Models;
+using System.Web.UI;
 
 namespace LojaVirtuall.Controllers
 {
+    [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     public class ProdutosController : Controller
     {
         private Contexto db = new Contexto();

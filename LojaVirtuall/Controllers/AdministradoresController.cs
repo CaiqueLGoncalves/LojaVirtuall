@@ -9,109 +9,109 @@ using System.Web.UI;
 namespace LojaVirtuall.Controllers
 {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-    public class FornecedoresController : Controller
+    public class AdministradoresController : Controller
     {
         private Contexto db = new Contexto();
 
-        // GET: Fornecedores
+        // GET: Administradores
         public ActionResult Index()
         {
-            return View(db.Fornecedor.ToList());
+            return View(db.Administrador.ToList());
         }
 
-        // GET: Fornecedores/Details/5
+        // GET: Administradores/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
+            Administrador administrador = db.Administrador.Find(id);
+            if (administrador == null)
             {
                 return HttpNotFound();
             }
-            return View(fornecedor);
+            return View(administrador);
         }
 
-        // GET: Fornecedores/Create
+        // GET: Administradores/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Fornecedores/Create
+        // POST: Administradores/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FornecedorID, Nome")] Fornecedor fornecedor)
+        public ActionResult Create([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Administrador administrador)
         {
             if (ModelState.IsValid)
             {
-                fornecedor.CriadoEm = DateTime.Now;
-                fornecedor.ModificadoEm = DateTime.Now;
+                administrador.CriadoEm = DateTime.Now;
+                administrador.ModificadoEm = DateTime.Now;
 
-                db.Fornecedor.Add(fornecedor);
+                db.Administrador.Add(administrador);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(fornecedor);
+            return View(administrador);
         }
 
-        // GET: Fornecedores/Edit/5
+        // GET: Administradores/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
+            Administrador administrador = db.Administrador.Find(id);
+            if (administrador == null)
             {
                 return HttpNotFound();
             }
-            return View(fornecedor);
+            return View(administrador);
         }
 
-        // POST: Fornecedores/Edit/5
+        // POST: Administradores/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FornecedorID, Nome")] Fornecedor fornecedor)
+        public ActionResult Edit([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Administrador administrador)
         {
             if (ModelState.IsValid)
             {
-                fornecedor.CriadoEm = DateTime.Now;
-                fornecedor.ModificadoEm = DateTime.Now;
+                administrador.CriadoEm = DateTime.Now;
+                administrador.ModificadoEm = DateTime.Now;
 
-                db.Entry(fornecedor).State = EntityState.Modified;
+                db.Entry(administrador).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(fornecedor);
+            return View(administrador);
         }
 
-        // GET: Fornecedores/Delete/5
+        // GET: Administradores/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
+            Administrador administrador = db.Administrador.Find(id);
+            if (administrador == null)
             {
                 return HttpNotFound();
             }
-            return View(fornecedor);
+            return View(administrador);
         }
 
-        // POST: Fornecedores/Delete/5
+        // POST: Administradores/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            db.Fornecedor.Remove(fornecedor);
+            Administrador administrador = db.Administrador.Find(id);
+            db.Administrador.Remove(administrador);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

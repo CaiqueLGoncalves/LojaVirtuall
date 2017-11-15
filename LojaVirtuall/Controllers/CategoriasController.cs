@@ -4,9 +4,11 @@ using System.Net;
 using System.Web.Mvc;
 using LojaVirtuall.Models;
 using System;
+using System.Web.UI;
 
 namespace LojaVirtuall.Controllers
 {
+    [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     public class CategoriasController : Controller
     {
         private Contexto db = new Contexto();

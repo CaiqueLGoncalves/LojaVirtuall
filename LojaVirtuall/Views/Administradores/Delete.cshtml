@@ -1,13 +1,13 @@
-﻿@model LojaVirtuall.Models.Produto
+﻿@model LojaVirtuall.Models.Administrador
 
 @{
-    ViewBag.Title = "Excluir Produto";
+    ViewBag.Title = "Excluir Administrador";
 }
 
-<h2 class="center-block text-center">Excluir Produto</h2>
+<h2 class="center-block text-center">Excluir Administrador</h2>
 <hr />
 
-<h3 class="pergunta-exclusao">Você tem certeza que deseja excluir este produto?</h3>
+<h3 class="pergunta-exclusao">Você tem certeza que deseja excluir este administrador?</h3>
 <div>
     <dl class="dl-horizontal">
         <dt>
@@ -19,43 +19,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Descricao)
+            @Html.DisplayNameFor(model => model.Email)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Descricao)
+            @Html.DisplayFor(model => model.Email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Preco)
+            @Html.DisplayNameFor(model => model.Login)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Preco)
+            @Html.DisplayFor(model => model.Login)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Quantidade)
+            @Html.DisplayNameFor(model => model.Senha)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Quantidade)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Categoria)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Categoria.Nome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Fornecedor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Fornecedor.Nome)
+            ********
         </dd>
 
         <dt>
@@ -81,6 +65,7 @@
         <dd>
             @Html.DisplayFor(model => model.ModificadoEm)
         </dd>
+
     </dl>
 
     @using (Html.BeginForm()) {
