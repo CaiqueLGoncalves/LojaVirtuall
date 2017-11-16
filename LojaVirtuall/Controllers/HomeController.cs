@@ -6,6 +6,12 @@ namespace LojaVirtuall.Controllers
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
     public class HomeController : Controller
     {
+        public ActionResult Login()
+        {
+            ViewBag.Title = "Autenticação";
+            return View();
+        }
+
         public ActionResult Index()
         {
             return View();
