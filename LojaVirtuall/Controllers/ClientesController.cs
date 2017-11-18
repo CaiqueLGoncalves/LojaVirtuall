@@ -5,11 +5,13 @@ using System.Web.Mvc;
 using LojaVirtuall.Models;
 using System.Web.UI;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LojaVirtuall.Controllers
 {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-    public class ClientesController : Controller
+    public class ClientesController : BaseController
     {
         private Contexto db = new Contexto();
 
@@ -47,12 +49,41 @@ namespace LojaVirtuall.Controllers
         {
             if (ModelState.IsValid)
             {
+                cliente.Senha = CalculateMD5String(cliente.Senha);
+                cliente.ConfirmacaoSenha = CalculateMD5String(cliente.ConfirmacaoSenha);
                 cliente.CriadoEm = DateTime.Now;
                 cliente.ModificadoEm = DateTime.Now;
 
                 db.Cliente.Add(cliente);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+
+            return View(cliente);
+        }
+
+        // GET: Clientes/Register
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Clientes/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha")] Cliente cliente)
+        {
+            if (ModelState.IsValid)
+            {
+                cliente.Senha = CalculateMD5String(cliente.Senha);
+                cliente.ConfirmacaoSenha = CalculateMD5String(cliente.ConfirmacaoSenha);
+                cliente.Ativo = true;
+                cliente.CriadoEm = DateTime.Now;
+                cliente.ModificadoEm = DateTime.Now;
+
+                db.Cliente.Add(cliente);
+                db.SaveChanges();
+                return RedirectToAction("Login", "Home");
             }
 
             return View(cliente);
@@ -65,7 +96,11 @@ namespace LojaVirtuall.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Cliente cliente = db.Cliente.Find(id);
+            cliente.Senha = null;
+            cliente.ConfirmacaoSenha = null;
+
             if (cliente == null)
             {
                 return HttpNotFound();
@@ -80,12 +115,51 @@ namespace LojaVirtuall.Controllers
         {
             if (ModelState.IsValid)
             {
+                cliente.Senha = CalculateMD5String(cliente.Senha);
+                cliente.ConfirmacaoSenha = CalculateMD5String(cliente.ConfirmacaoSenha);
                 cliente.CriadoEm = DateTime.Now;
                 cliente.ModificadoEm = DateTime.Now;
 
                 db.Entry(cliente).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+            return View(cliente);
+        }
+
+        // GET: Clientes/ManageAccount
+        public ActionResult ManageAccount()
+        {
+            int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+
+            Cliente cliente = db.Cliente.Find(id);
+            cliente.Senha = null;
+            cliente.ConfirmacaoSenha = null;
+
+            if (cliente == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(cliente);
+        }
+
+        // POST: Clientes/ManageAccount
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ManageAccount([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha")] Cliente cliente)
+        {
+            if (ModelState.IsValid)
+            {
+                cliente.Senha = CalculateMD5String(cliente.Senha);
+                cliente.ConfirmacaoSenha = CalculateMD5String(cliente.ConfirmacaoSenha);
+                cliente.Ativo = true;
+                cliente.CriadoEm = DateTime.Now;
+                cliente.ModificadoEm = DateTime.Now;
+
+                db.Entry(cliente).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Home");
             }
             return View(cliente);
         }
@@ -123,6 +197,38 @@ namespace LojaVirtuall.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private string CalculateMD5String(string entrada)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(entrada);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
+        }
+
+        private bool VerificarDisponibilidadeEmail(string email)
+        {
+            var admin = db.Administrador.Where(c => c.Email == email);
+            var cliente = db.Cliente.Where(c => c.Email == email);
+
+            return (admin == null && cliente == null);
+        }
+
+        private bool VerificarDisponibilidadeLogin(string login)
+        {
+            var admin = db.Administrador.Where(c => c.Login == login);
+            var cliente = db.Cliente.Where(c => c.Login == login);
+
+            return (admin == null && cliente == null);
         }
     }
 }

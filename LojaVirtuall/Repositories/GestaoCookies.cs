@@ -8,6 +8,8 @@ namespace LojaVirtuall.Repositories
     {
         public static void CriarCookie(int usuarioID, bool adm)
         {
+            ApagarCookie(); // Apaga o cookie de autenticação antes de criar um novo
+
             Contexto db = new Contexto();
 
             HttpCookie cookieUsuario = new HttpCookie("CookieUsuario");
@@ -24,8 +26,23 @@ namespace LojaVirtuall.Repositories
                 cookieUsuario.Values["Nivel"] = "Cliente";
             }
 
-            cookieUsuario.Expires = DateTime.Now.AddDays(1);
+            cookieUsuario.Expires = DateTime.Now.AddMinutes(5);
             HttpContext.Current.Response.Cookies.Add(cookieUsuario);
+        }
+
+        public static bool ApagarCookie()
+        {
+            var cookie = HttpContext.Current.Request.Cookies["CookieUsuario"];
+
+            if (cookie == null)
+            {
+                return false;
+            }
+            else
+            {
+                HttpContext.Current.Response.Cookies[cookie.Name].Expires = DateTime.Now.AddDays(-1);
+                return true;
+            }
         }
     }
 }

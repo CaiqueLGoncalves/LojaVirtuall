@@ -27,3 +27,7 @@ textarea {
     resize: vertical;
     height: 100px;
 }
+
+#logout {
+    cursor: pointer;
+}

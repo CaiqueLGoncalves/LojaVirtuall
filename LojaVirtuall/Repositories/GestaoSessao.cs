@@ -28,5 +28,27 @@ namespace LojaVirtuall.Repositories
             HttpContext.Current.Session["Login"] = usuario.Login;
             HttpContext.Current.Session["Email"] = usuario.Email;
         }
+
+        public static bool FecharSessao()
+        {
+            var sessao = HttpContext.Current.Session;
+
+            if (sessao == null)
+            {
+                return false;
+            }
+            else
+            {
+                HttpContext.Current.Session["ID"] = null;
+                HttpContext.Current.Session["Nome"] = null;
+                HttpContext.Current.Session["Login"] = null;
+                HttpContext.Current.Session["Email"] = null;
+                HttpContext.Current.Session["Nivel"] = null;
+                HttpContext.Current.Session.Clear();
+                HttpContext.Current.Session.Abandon();
+
+                return true;
+            }
+        }
     }
 }

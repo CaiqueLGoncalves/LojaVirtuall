@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LojaVirtuall.Models
 {
@@ -15,11 +16,13 @@ namespace LojaVirtuall.Models
 
         [DisplayName("E-mail")]
         [DataType(DataType.EmailAddress)]
+        [Index(IsUnique=true)]
         [EmailAddress(ErrorMessage = "Este formato de e-mail não é válido.")]
         [StringLength(100, ErrorMessage = "O campo 'E-mail' deve ter no máximo 100 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'E-mail' está vazio.")]
         public string Email { get; set; }
 
+        [Index(IsUnique = true)]
         [MinLength(6, ErrorMessage = "O campo 'Login' deve ter no mínimo 6 caracteres.")]
         [StringLength(32, ErrorMessage = "O campo 'Login' deve ter no máximo 32 caracteres.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "O campo 'Login' está vazio.")]

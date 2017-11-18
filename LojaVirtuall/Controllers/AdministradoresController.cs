@@ -5,11 +5,13 @@ using System.Web.Mvc;
 using LojaVirtuall.Models;
 using System;
 using System.Web.UI;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace LojaVirtuall.Controllers
 {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-    public class AdministradoresController : Controller
+    public class AdministradoresController : BaseController
     {
         private Contexto db = new Contexto();
 
@@ -47,12 +49,41 @@ namespace LojaVirtuall.Controllers
         {
             if (ModelState.IsValid)
             {
+                administrador.Senha = CalculateMD5String(administrador.Senha);
+                administrador.ConfirmacaoSenha = CalculateMD5String(administrador.ConfirmacaoSenha);
                 administrador.CriadoEm = DateTime.Now;
                 administrador.ModificadoEm = DateTime.Now;
 
                 db.Administrador.Add(administrador);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+            }
+
+            return View(administrador);
+        }
+
+        // GET: Administradores/Register
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Administradores/Register
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha")] Administrador administrador)
+        {
+            if (ModelState.IsValid)
+            {
+                administrador.Senha = CalculateMD5String(administrador.Senha);
+                administrador.ConfirmacaoSenha = CalculateMD5String(administrador.ConfirmacaoSenha);
+                administrador.Ativo = true;
+                administrador.CriadoEm = DateTime.Now;
+                administrador.ModificadoEm = DateTime.Now;
+
+                db.Administrador.Add(administrador);
+                db.SaveChanges();
+                return RedirectToAction("Login", "Home");
             }
 
             return View(administrador);
@@ -65,7 +96,11 @@ namespace LojaVirtuall.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Administrador administrador = db.Administrador.Find(id);
+            administrador.Senha = null;
+            administrador.ConfirmacaoSenha = null;
+
             if (administrador == null)
             {
                 return HttpNotFound();
@@ -80,6 +115,8 @@ namespace LojaVirtuall.Controllers
         {
             if (ModelState.IsValid)
             {
+                administrador.Senha = CalculateMD5String(administrador.Senha);
+                administrador.ConfirmacaoSenha = CalculateMD5String(administrador.ConfirmacaoSenha);
                 administrador.CriadoEm = DateTime.Now;
                 administrador.ModificadoEm = DateTime.Now;
 
@@ -123,6 +160,38 @@ namespace LojaVirtuall.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private string CalculateMD5String(string entrada)
+        {
+            MD5 md5 = MD5.Create();
+            byte[] inputBytes = Encoding.ASCII.GetBytes(entrada);
+            byte[] hash = md5.ComputeHash(inputBytes);
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            return sb.ToString();
+        }
+
+        private bool VerificarDisponibilidadeEmail(string email)
+        {
+            var admin = db.Administrador.Where(c => c.Email == email);
+            var cliente = db.Cliente.Where(c => c.Email == email);
+
+            return (admin == null && cliente == null);
+        }
+
+        private bool VerificarDisponibilidadeLogin(string login)
+        {
+            var admin = db.Administrador.Where(c => c.Login == login);
+            var cliente = db.Cliente.Where(c => c.Login == login);
+
+            return (admin == null && cliente == null);
         }
     }
 }

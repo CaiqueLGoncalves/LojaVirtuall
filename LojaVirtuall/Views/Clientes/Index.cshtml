@@ -45,6 +45,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Ativo)
+                    @(item.Ativo ? "Ativo" : "Inativo")
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.UsuarioID }, new { @class = "btn btn-default" })

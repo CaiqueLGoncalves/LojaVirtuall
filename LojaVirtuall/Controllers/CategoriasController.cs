@@ -9,7 +9,7 @@ using System.Web.UI;
 namespace LojaVirtuall.Controllers
 {
     [OutputCache(Location = OutputCacheLocation.None, NoStore = true)]
-    public class CategoriasController : Controller
+    public class CategoriasController : BaseController
     {
         private Contexto db = new Contexto();
 
@@ -47,8 +47,12 @@ namespace LojaVirtuall.Controllers
         {
             if (ModelState.IsValid)
             {
+                int idUser = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+
                 categoria.CriadoEm = DateTime.Now;
                 categoria.ModificadoEm = DateTime.Now;
+                categoria.CriadoPor = db.Administrador.Find(idUser);
+                categoria.ModificadoPor = db.Administrador.Find(idUser);
 
                 db.Categoria.Add(categoria);
                 db.SaveChanges();
@@ -80,8 +84,12 @@ namespace LojaVirtuall.Controllers
         {
             if (ModelState.IsValid)
             {
-                categoria.CriadoEm = DateTime.Now;
+                int idUser = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+
+                categoria.CriadoEm = DateTime.Now; // Alterar
                 categoria.ModificadoEm = DateTime.Now;
+                categoria.CriadoPor = db.Administrador.Find(idUser); // Alterar
+                categoria.ModificadoPor = db.Administrador.Find(idUser);
 
                 db.Entry(categoria).State = EntityState.Modified;
                 db.SaveChanges();
