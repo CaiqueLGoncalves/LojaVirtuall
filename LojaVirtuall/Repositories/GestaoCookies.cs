@@ -26,7 +26,7 @@ namespace LojaVirtuall.Repositories
                 cookieUsuario.Values["Nivel"] = "Cliente";
             }
 
-            cookieUsuario.Expires = DateTime.Now.AddMinutes(5);
+            cookieUsuario.Expires = DateTime.Now.AddHours(3);
             HttpContext.Current.Response.Cookies.Add(cookieUsuario);
         }
 

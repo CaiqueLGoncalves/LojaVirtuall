@@ -12,7 +12,8 @@ namespace LojaVirtuall.Filters
 
             if ((controller != "Home") &&
                 (controller != "Clientes" || action != "Register") &&
-                (controller != "Administradores" || action != "Register"))
+                (controller != "Administradores" || action != "Register") &&
+                (controller != "Produtos" || action != "Search"))
             {
 
                 if ((controller == "Clientes" && action == "ManageAccount"))

@@ -1,0 +1,195 @@
+﻿@model IEnumerable<LojaVirtuall.Models.Produto>
+
+@{
+    ViewBag.Title = "Loja";
+}
+
+<div class="container pesquisa">
+    <form>
+        <div class="form-group col-lg-12">
+            <label for="busca">Busca de Produtos</label>
+            <input type="text" id="busca" name="busca" class="form-control" />
+        </div>
+
+        <div class="form-group col-lg-12">
+            <label>Filtros</label>
+
+            <div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="filtroBusca" id="filtroNome" value="Nome" checked="checked" />
+                        <span>Nome</span>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="filtroBusca" id="filtroFornecedor" value="Fornecedor" />
+                        <span>Fornecedor</span>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input type="radio" name="filtroBusca" id="filtroCategoria" value="Categoria" />
+                        <span>Categoria</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-lg-12">
+            <label for="ordenacao">Ordenar por</label>
+
+            <select class="form-control" name="ordenacao" id="ordenacao">
+                <option value="1">Nome (Ascendente)</option>
+                <option value="2">Nome (Descendente)</option>
+                <option value="3">Preço (Ascendente)</option>
+                <option value="4">Preço (Descendente)</option>
+                <option value="5">Categoria (Ascendente)</option>
+                <option value="6">Categoria (Descendente)</option>
+                <option value="7">Fornecedor (Ascendente)</option>
+                <option value="8">Fornecedor (Descendente)</option>
+            </select>
+        </div>
+
+        <div class="form-group col-lg-12">
+            <button class="btn btn-primary btn-lg center-block">Buscar</button>
+        </div>
+    </form>
+</div>
+
+<div class="container resultados">
+    @if (Model.Count() == 0)
+    {
+        <p class="center-block text-center"><b>Nenhum produto encontrado.</b></p>
+    }
+
+    @foreach (var item in Model)
+    {
+
+        <div class="col-lg-6">
+            <div class="produto">
+                <h2 class="center-block text-center">@Html.DisplayFor(modelItem => item.Nome)</h2>
+
+                <div class="col-md-12 dados-produto">
+                    <p>@Html.DisplayFor(modelItem => item.Descricao)</p>
+                    <p><b>Categoria: </b>@Html.DisplayFor(modelItem => item.Categoria.Nome)</p>
+                    <p><b>Fornecedor: </b>@Html.DisplayFor(modelItem => item.Fornecedor.Nome)</p>
+                </div>
+
+                <div class="col-md-6">
+                    <p class="preco"><b>Preço: </b>@Html.DisplayFor(modelItem => item.Preco)</p>
+                </div>
+
+                <div class="col-md-6">
+                    @if (item.Quantidade > 0)
+                    {   
+                        <button class="btn btn-primary pull-right">Adicionar ao Carrinho</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary pull-right disabled">Produto Temporariamente Indisponível</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!--
+<table id="tbProdutos" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fornecedor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descricao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Preco).ToString()
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Quantidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ativo)
+                    @(item.Ativo ? "Ativo" : "Inativo")
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Detalhes", "Details", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+-->
+@section styles {
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script type="te
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#tbProdutos").DataTable({
+            language: {
+                "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
+            },
+            responsive: true,
+            columns: [
+                { responsivePriority: 0 },
+                { responsivePriority: 4 },
+                { responsivePriority: 2 },
+                { responsivePriority: 3 },
+                { responsivePriority: 5 },
+                { responsivePriority: 6 },
+                { responsivePriority: 7 },
+                { responsivePriority: 1 }
+            ],
+            columnDefs: [
+                { orderable: false, targets: [7] }
+            ],
+        });
+    });
+</script>
+}

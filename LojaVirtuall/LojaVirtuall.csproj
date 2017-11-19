@@ -477,6 +477,7 @@
     <Content Include="Views\Clientes\Register.cshtml" />
     <Content Include="Views\Administradores\Register.cshtml" />
     <Content Include="Views\Clientes\ManageAccount.cshtml" />
+    <Content Include="Views\Produtos\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

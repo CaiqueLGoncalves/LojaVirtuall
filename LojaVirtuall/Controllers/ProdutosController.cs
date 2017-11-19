@@ -20,6 +20,107 @@ namespace LojaVirtuall.Controllers
             return View(produto.ToList());
         }
 
+        public ActionResult Search(string filtroBusca, string busca, int? ordenacao)
+        {
+            IQueryable<Produto> produto;
+
+            switch (filtroBusca)
+            {
+                case "Nome":
+                    {
+                        if (busca.Trim().Length > 0)
+                        {
+                            produto = db.Produto.Where(p => p.Ativo == true && p.Nome.ToLower().Contains(busca.ToLower())).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        }
+                        else
+                        {
+                            produto = db.Produto.Where(p => p.Ativo == true).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        }
+                        break;
+                    }
+                case "Fornecedor":
+                    {
+                        if (busca.Trim().Length > 0)
+                        {
+                            produto = db.Produto.Where(p => p.Ativo == true && p.Fornecedor.Nome.ToLower().Contains(busca.ToLower())).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        }
+                        else
+                        {
+                            produto = db.Produto.Where(p => p.Ativo == true).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        }
+                        break;
+                    }
+                case "Categoria":
+                    {
+                        if (busca.Trim().Length > 0)
+                        {
+                            produto = db.Produto.Where(p => p.Ativo == true && p.Categoria.Nome.ToLower().Contains(busca.ToLower())).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        }
+                        else
+                        {
+                            produto = db.Produto.Where(p => p.Ativo == true).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        produto = db.Produto.Where(p => p.Ativo == true).Include(p => p.Categoria).Include(p => p.Fornecedor);
+                        break;
+                    }
+            }
+
+            switch (ordenacao)
+            {
+                case 1:
+                    {
+                        produto = produto.OrderBy(p => p.Nome);
+                        break;
+                    }
+                case 2:
+                    {
+                        produto = produto.OrderByDescending(p => p.Nome);
+                        break;
+                    }
+                case 3:
+                    {
+                        produto = produto.OrderBy(p => p.Preco);
+                        break;
+                    }
+                case 4:
+                    {
+                        produto = produto.OrderByDescending(p => p.Preco);
+                        break;
+                    }
+                case 5:
+                    {
+                        produto = produto.OrderBy(p => p.Categoria.Nome);
+                        break;
+                    }
+                case 6:
+                    {
+                        produto = produto.OrderByDescending(p => p.Categoria.Nome);
+                        break;
+                    }
+                case 7:
+                    {
+                        produto = produto.OrderBy(p => p.Fornecedor.Nome);
+                        break;
+                    }
+                case 8:
+                    {
+                        produto = produto.OrderByDescending(p => p.Fornecedor.Nome);
+                        break;
+                    }
+                default:
+                    {
+                        produto = produto.OrderBy(p => p.Nome);
+                        break;
+                    }
+            }
+
+            return View(produto.ToList());
+        }
+
         // GET: Produtos/Details/5
         public ActionResult Details(int? id)
         {
@@ -32,7 +133,8 @@ namespace LojaVirtuall.Controllers
             if (produto == null)
             {
                 return HttpNotFound();
-            } else
+            }
+            else
             {
                 produto.Categoria = db.Categoria.Find(produto.CategoriaID);
                 produto.Fornecedor = db.Fornecedor.Find(produto.FornecedorID);

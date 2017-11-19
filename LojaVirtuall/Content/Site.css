@@ -16,18 +16,78 @@
     white-space: normal;
 }
 
-.control-label, .dl-horizontal dt { text-align: left !important; }
-
-.btnCadastro-wrapper { margin-bottom: 35px; }
-
-.pergunta-exclusao { margin-bottom: 21px; }
-
 textarea {
     min-height: 100px;
     resize: vertical;
     height: 100px;
 }
 
+#botao-entrar {
+    margin-top: 21px;
+    width: 150px;
+}
+
 #logout {
     cursor: pointer;
+}
+
+.control-label, .dl-horizontal dt { text-align: left !important; }
+
+#tbProdutos .btn {
+    margin-bottom: 7px;
+}
+
+.btnCadastro-wrapper { margin-bottom: 35px; }
+
+.pergunta-exclusao { margin-bottom: 21px; }
+
+.pesquisa {
+    border: 1px #CCC solid;
+    border-radius: 7px;
+    margin: 28px 0px;
+    padding-bottom: 21px;
+    padding-top: 21px;
+}
+
+.pesquisa .form-group {
+    margin-bottom: 21px;
+}
+
+.pesquisa select {
+    max-width: 250px;
+    width: 100%;
+}
+
+.resultados {
+    margin: 21px 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.produto {
+    border: 1px #CCC solid;
+    border-radius: 7px;
+    margin-bottom: 14px;
+    padding: 7px;
+    overflow: hidden;
+}
+
+.produto h2 {
+    font-size: 26px;
+    margin-bottom: 20px !important;
+    margin-top: 10px !important;
+}
+
+.produto .dados-produto {
+    margin-bottom: 28px;
+}
+
+.produto p {
+    text-align: justify;
+    font-size: 12px;
+}
+
+.produto .preco {
+    font-size: 16px;
+    line-height: 32px;
 }
