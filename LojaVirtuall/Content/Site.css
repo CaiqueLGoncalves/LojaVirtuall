@@ -91,3 +91,33 @@ textarea {
     font-size: 16px;
     line-height: 32px;
 }
+
+#tbCarrinho {
+    margin-top: 49px;
+}
+
+#tbCarrinho th {
+    font-size: 22px;
+}
+
+#tbCarrinho td {
+    font-size: 22px;
+}
+
+#tbCarrinho .glyphicon:hover, #tbCarrinho .glyphicon:focus {
+    text-decoration: none;
+}
+
+.quantidade {
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+#botoes-carrinho {
+    margin-top: 70px;
+    overflow: hidden;
+}
+
+#botoes-carrinho .btn {
+    margin-left: 14px;
+}

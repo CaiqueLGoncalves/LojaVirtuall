@@ -22,7 +22,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Nossos Produtos", "Search", "Produtos")</li>
+                        <li class="show-no-auth show-client">@Html.ActionLink("Nossos Produtos", "Search", "Produtos")</li>
 
                         <li class="show-admin">@Html.ActionLink("Produtos", "Index", "Produtos")</li>
                         <li class="show-admin">@Html.ActionLink("Fornecedores", "Index", "Fornecedores")</li>
@@ -32,6 +32,7 @@
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
+                        <li class="show-no-auth show-client">@Html.ActionLink("Carrinho", "Index", "Carrinho")</liclass="show-no-auth>
                         <li class="show-no-auth">@Html.ActionLink("Cadastro", "Register", "Clientes")</li>
                         <li class="show-no-auth">@Html.ActionLink("Login", "Login", "Home")</li>
                         <li class="show-client">@Html.ActionLink("Conta", "ManageAccount", "Clientes")</li>
