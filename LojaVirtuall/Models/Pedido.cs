@@ -12,7 +12,7 @@ namespace LojaVirtuall.Models
         public int PedidoID { get; set; }
 
         [DataType(DataType.DateTime)]
-        [DisplayName("Data do Pedido")]
+        [DisplayName("Data/Hora do Pedido")]
         public DateTime? DataPedido { get; set; }
 
         public int UsuarioID { get; set; }

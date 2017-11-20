@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using LojaVirtuall.Models;
 using System;
 using System.Web.UI;
+using LojaVirtuall.Repositories;
 
 namespace LojaVirtuall.Controllers
 {
@@ -37,7 +38,11 @@ namespace LojaVirtuall.Controllers
         // GET: Categorias/Create
         public ActionResult Create()
         {
-            return View();
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
+            {
+                return View();
+            }
+            return null;
         }
 
         // POST: Categorias/Create
@@ -65,16 +70,20 @@ namespace LojaVirtuall.Controllers
         // GET: Categorias/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Categoria categoria = db.Categoria.Find(id);
+                if (categoria == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(categoria);
             }
-            Categoria categoria = db.Categoria.Find(id);
-            if (categoria == null)
-            {
-                return HttpNotFound();
-            }
-            return View(categoria);
+            return null;
         }
 
         // POST: Categorias/Edit/5
@@ -101,16 +110,21 @@ namespace LojaVirtuall.Controllers
         // GET: Categorias/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Categoria categoria = db.Categoria.Find(id);
+                if (categoria == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(categoria);
             }
-            Categoria categoria = db.Categoria.Find(id);
-            if (categoria == null)
-            {
-                return HttpNotFound();
-            }
-            return View(categoria);
+
+            return null;
         }
 
         // POST: Categorias/Delete/5

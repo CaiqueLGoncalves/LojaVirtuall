@@ -1,0 +1,165 @@
+﻿@model IEnumerable<LojaVirtuall.Models.Pedido>
+
+@{
+    ViewBag.Title = "Meus Pedidos";
+}
+
+<h2 class="center-block text-center">Meus Pedidos</h2>
+<hr />
+
+<div id="status-cancelamento" class="alert text-center">
+</div>
+
+<table id="tbMeusPedidos" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Número
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DataPedido)
+            </th>
+
+            <th>
+                Quantidade de Itens
+            </th>
+
+            <th>
+                Status
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PedidoID)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataPedido)
+                </td>
+
+                @{
+                    int quantidade = 0;
+                }
+
+                @foreach (var it in item.Itens)
+                {
+                    quantidade += it.Quantidade;
+                }
+
+                <td>
+                    @quantidade
+                </td>
+
+                <td>
+                    @if (item.Ativo)
+                {
+                        <span class="label label-success">OK</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger">Cancelado</span>
+                    }
+                </td>
+
+                <td>
+                    @Html.ActionLink("Detalhes", "ExibirPedido", new { id = item.PedidoID }, new { @class = "btn btn-sm btn-default" })
+                    <button class="btn btn-sm btn-default" onclick="javascript: cancelarPedido(@item.PedidoID)">Cancelar</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section styles {
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/jAlert.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/jAlert.min.js"></script>
+    <script src="~/Scripts/jAlert-functions.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbMeusPedidos").DataTable({
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
+                },
+                responsive: true,
+                columns: [
+                    { responsivePriority: 0 },
+                    { responsivePriority: 2 },
+                    { responsivePriority: 3 },
+                    { responsivePriority: 4 },
+                    { responsivePriority: 1 }
+                ],
+                columnDefs: [
+                    { orderable: false, targets: [4] }
+                ],
+            });
+        });
+
+        function cancelarPedido(idPedido) {
+            $.jAlert({
+                'animationTimeout': 150,
+                'size': 'sm',
+                'type': 'confirm',
+                'title': 'LojaVirtuall',
+                'theme': 'dark_red',
+                'confirmQuestion': 'Você tem certeza que deseja cancelar este pedido?',
+                'confirmBtnText': 'Sim',
+                'denyBtnText': 'Não',
+                'onConfirm': function () {
+                    $.ajax({
+                        url: "/Pedidos/CancelarPedido",
+                        data: { id: idPedido },
+                        dataType: "json",
+                        type: "POST",
+                        async: true,
+                        beforeSend: function () {
+                            $("#status-cancelamento").removeClass("alert-success");
+                            $("#status-cancelamento").removeClass("alert-danger");
+                            $("#status-cancelamento").addClass("alert-info");
+                            $("#status-cancelamento").html("Aguarde...");
+                            $("#status-cancelamento").show();
+                        },
+                        success: function (dados) {
+                            if (dados.OK) {
+                                $("#status-cancelamento").removeClass("alert-danger");
+                                $("#status-cancelamento").removeClass("alert-info");
+                                $("#status-cancelamento").addClass("alert-success");
+                                $("#status-cancelamento").html(dados.Mensagem);
+                                $("#status-cancelamento").show();
+                                setTimeout(function () { window.location.href = "/Pedidos/MeusPedidos" }, 1000);
+                            } else {
+                                $("#status-cancelamento").removeClass("alert-success");
+                                $("#status-cancelamento").removeClass("alert-info");
+                                $("#status-cancelamento").addClass("alert-danger");
+                                $("#status-cancelamento").html(dados.Mensagem);
+                                $("#status-cancelamento").show();
+                            }
+
+                            
+                        },
+                        error: function (dados) {
+                            $("#status-cancelamento").removeClass("alert-success");
+                            $("#status-cancelamento").removeClass("alert-info");
+                            $("#status-cancelamento").addClass("alert-danger");
+                            $("#status-cancelamento").html(dados.Mensagem);
+                            $("#status-cancelamento").show();
+                        }
+                    });
+                }
+            });
+        }
+    </script>   
+}

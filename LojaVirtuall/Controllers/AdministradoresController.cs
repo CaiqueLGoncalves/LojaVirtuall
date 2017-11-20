@@ -7,6 +7,7 @@ using System;
 using System.Web.UI;
 using System.Security.Cryptography;
 using System.Text;
+using LojaVirtuall.Repositories;
 
 namespace LojaVirtuall.Controllers
 {
@@ -39,7 +40,11 @@ namespace LojaVirtuall.Controllers
         // GET: Administradores/Create
         public ActionResult Create()
         {
-            return View();
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
+            {
+                return View();
+            }
+            return null;
         }
 
         // POST: Administradores/Create
@@ -92,20 +97,24 @@ namespace LojaVirtuall.Controllers
         // GET: Administradores/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
 
-            Administrador administrador = db.Administrador.Find(id);
-            administrador.Senha = null;
-            administrador.ConfirmacaoSenha = null;
+                Administrador administrador = db.Administrador.Find(id);
+                administrador.Senha = null;
+                administrador.ConfirmacaoSenha = null;
 
-            if (administrador == null)
-            {
-                return HttpNotFound();
+                if (administrador == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(administrador);
             }
-            return View(administrador);
+            return null;
         }
 
         // POST: Administradores/Edit/5
@@ -130,16 +139,21 @@ namespace LojaVirtuall.Controllers
         // GET: Administradores/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Administrador administrador = db.Administrador.Find(id);
+                if (administrador == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(administrador);
             }
-            Administrador administrador = db.Administrador.Find(id);
-            if (administrador == null)
-            {
-                return HttpNotFound();
-            }
-            return View(administrador);
+
+            return null;
         }
 
         // POST: Administradores/Delete/5

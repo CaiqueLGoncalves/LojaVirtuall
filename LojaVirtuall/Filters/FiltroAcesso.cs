@@ -1,4 +1,5 @@
 ﻿using LojaVirtuall.Repositories;
+using System.Web;
 using System.Web.Mvc;
 
 namespace LojaVirtuall.Filters
@@ -17,18 +18,24 @@ namespace LojaVirtuall.Filters
             {
 
                 if ((controller == "Clientes" && action == "ManageAccount") ||
-                    (controller == "Clientes" && action == "ChangePassword"))
+                    (controller == "Clientes" && action == "ChangePassword") ||
+                    (controller == "Pedidos" && action == "EmitirPedido") ||
+                    (controller == "Pedidos" && action == "ExibirPedido") ||
+                    (controller == "Pedidos" && action == "MeusPedidos") ||
+                    (controller == "Pedidos" && action == "CancelarPedido"))
                 {
                     if (GestaoUsuarios.VerificarStatusCliente() == null)
                     {
-                        filtroContexto.RequestContext.HttpContext.Response.Redirect("/Home/Login");
+                        // filtroContexto.RequestContext.HttpContext.Response.Redirect("/Home/Login");
+                        HttpContext.Current.Response.Redirect("/Home/Login");
                     }
                 }
                 else
                 {
                     if (GestaoUsuarios.VerificarStatusAdministrador() == null)
                     {
-                        filtroContexto.RequestContext.HttpContext.Response.Redirect("/Home/Login");
+                        // filtroContexto.RequestContext.HttpContext.Response.Redirect("/Home/Login");
+                        HttpContext.Current.Response.Redirect("/Home/Login");
                     }
                 }
             }

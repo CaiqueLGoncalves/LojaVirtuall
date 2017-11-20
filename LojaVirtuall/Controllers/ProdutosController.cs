@@ -5,6 +5,7 @@ using System.Net;
 using System.Web.Mvc;
 using LojaVirtuall.Models;
 using System.Web.UI;
+using LojaVirtuall.Repositories;
 
 namespace LojaVirtuall.Controllers
 {
@@ -145,9 +146,13 @@ namespace LojaVirtuall.Controllers
         // GET: Produtos/Create
         public ActionResult Create()
         {
-            ViewBag.CategoriaID = new SelectList(db.Categoria, "CategoriaID", "Nome");
-            ViewBag.FornecedorID = new SelectList(db.Fornecedor, "FornecedorID", "Nome");
-            return View();
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
+            {
+                ViewBag.CategoriaID = new SelectList(db.Categoria, "CategoriaID", "Nome");
+                ViewBag.FornecedorID = new SelectList(db.Fornecedor, "FornecedorID", "Nome");
+                return View();
+            }
+            return null;
         }
 
         // POST: Produtos/Create
@@ -177,18 +182,22 @@ namespace LojaVirtuall.Controllers
         // GET: Produtos/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Produto produto = db.Produto.Find(id);
+                if (produto == null)
+                {
+                    return HttpNotFound();
+                }
+                ViewBag.CategoriaID = new SelectList(db.Categoria, "CategoriaID", "Nome", produto.CategoriaID);
+                ViewBag.FornecedorID = new SelectList(db.Fornecedor, "FornecedorID", "Nome", produto.FornecedorID);
+                return View(produto);
             }
-            Produto produto = db.Produto.Find(id);
-            if (produto == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.CategoriaID = new SelectList(db.Categoria, "CategoriaID", "Nome", produto.CategoriaID);
-            ViewBag.FornecedorID = new SelectList(db.Fornecedor, "FornecedorID", "Nome", produto.FornecedorID);
-            return View(produto);
+            return null;
         }
 
         // POST: Produtos/Edit/5
@@ -217,21 +226,26 @@ namespace LojaVirtuall.Controllers
         // GET: Produtos/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Produto produto = db.Produto.Find(id);
+                if (produto == null)
+                {
+                    return HttpNotFound();
+                }
+                else
+                {
+                    produto.Categoria = db.Categoria.Find(produto.CategoriaID);
+                    produto.Fornecedor = db.Fornecedor.Find(produto.FornecedorID);
+                }
+                return View(produto);
             }
-            Produto produto = db.Produto.Find(id);
-            if (produto == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                produto.Categoria = db.Categoria.Find(produto.CategoriaID);
-                produto.Fornecedor = db.Fornecedor.Find(produto.FornecedorID);
-            }
-            return View(produto);
+
+            return null;
         }
 
         // POST: Produtos/Delete/5

@@ -7,7 +7,7 @@ using System.Web.UI;
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using System.Data.Entity.Migrations;
+using LojaVirtuall.Repositories;
 
 namespace LojaVirtuall.Controllers
 {
@@ -40,7 +40,11 @@ namespace LojaVirtuall.Controllers
         // GET: Clientes/Create
         public ActionResult Create()
         {
-            return View();
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
+            {
+                return View();
+            }
+            return null;
         }
 
         // POST: Clientes/Create
@@ -93,21 +97,25 @@ namespace LojaVirtuall.Controllers
         // GET: Clientes/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                Cliente cliente = db.Cliente.Find(id);
+                cliente.Senha = null;
+                cliente.ConfirmacaoSenha = null;
+
+                if (cliente == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(cliente);
             }
-
-            Cliente cliente = db.Cliente.Find(id);
-            cliente.Senha = null;
-            cliente.ConfirmacaoSenha = null;
-
-            if (cliente == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(cliente);
+            return null;
         }
 
         // POST: Clientes/Edit/5
@@ -133,15 +141,20 @@ namespace LojaVirtuall.Controllers
         // GET: Clientes/ManageAccount
         public ActionResult ManageAccount()
         {
-            int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
-            Cliente cliente = db.Cliente.Find(id);
-
-            if (cliente == null)
+            if (GestaoUsuarios.VerificarStatusCliente() != null)
             {
-                return HttpNotFound();
+                int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+                Cliente cliente = db.Cliente.Find(id);
+
+                if (cliente == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(cliente);
             }
 
-            return View(cliente);
+            return null;
         }
 
         // POST: Clientes/ManageAccount
@@ -174,18 +187,23 @@ namespace LojaVirtuall.Controllers
         // GET: Clientes/ChangePassword
         public ActionResult ChangePassword()
         {
-            int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
-            Cliente cliente = db.Cliente.Find(id);
-
-            cliente.Senha = null;
-            cliente.ConfirmacaoSenha = null;
-
-            if (cliente == null)
+            if (GestaoUsuarios.VerificarStatusCliente() != null)
             {
-                return HttpNotFound();
+                int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+                Cliente cliente = db.Cliente.Find(id);
+
+                cliente.Senha = null;
+                cliente.ConfirmacaoSenha = null;
+
+                if (cliente == null)
+                {
+                    return HttpNotFound();
+                }
+
+                return View(cliente);
             }
 
-            return View(cliente);
+            return null;
         }
 
         // POST: Clientes/ChangePassword
@@ -216,16 +234,21 @@ namespace LojaVirtuall.Controllers
         // GET: Clientes/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Cliente cliente = db.Cliente.Find(id);
+                if (cliente == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(cliente);
             }
-            Cliente cliente = db.Cliente.Find(id);
-            if (cliente == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cliente);
+
+            return null;
         }
 
         // POST: Clientes/Delete/5

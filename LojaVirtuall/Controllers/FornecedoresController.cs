@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using LojaVirtuall.Models;
 using System;
 using System.Web.UI;
+using LojaVirtuall.Repositories;
 
 namespace LojaVirtuall.Controllers
 {
@@ -37,7 +38,12 @@ namespace LojaVirtuall.Controllers
         // GET: Fornecedores/Create
         public ActionResult Create()
         {
-            return View();
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
+            {
+                return View();
+            }
+
+            return null;
         }
 
         // POST: Fornecedores/Create
@@ -65,16 +71,20 @@ namespace LojaVirtuall.Controllers
         // GET: Fornecedores/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Fornecedor fornecedor = db.Fornecedor.Find(id);
+                if (fornecedor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(fornecedor);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(fornecedor);
+            return null;
         }
 
         // POST: Fornecedores/Edit/5
@@ -101,16 +111,21 @@ namespace LojaVirtuall.Controllers
         // GET: Fornecedores/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Fornecedor fornecedor = db.Fornecedor.Find(id);
+                if (fornecedor == null)
+                {
+                    return HttpNotFound();
+                }
+                return View(fornecedor);
             }
-            Fornecedor fornecedor = db.Fornecedor.Find(id);
-            if (fornecedor == null)
-            {
-                return HttpNotFound();
-            }
-            return View(fornecedor);
+
+            return null;
         }
 
         // POST: Fornecedores/Delete/5
