@@ -21,10 +21,22 @@
                     $("#status").addClass("alert-success");
                     $("#status").html(dados.Mensagem);
                     $("#status").parent().show();
-                    if (dados.Nivel == "Cliente") {
-                        setTimeout(function () { window.location.href = "/Home" }, 1000);
+
+                    var redirAddress = $("#redirAddress").val();
+
+                    if (redirAddress != null || redirAddress != "") {
+
+                        if (redirAddress == "/Pedidos/EmitirPedido") {
+                            redirAddress = "/Carrinho";
+                        }
+
+                        if (redirAddress == "/Pedidos/ExibirPedido" || redirAddress == "/Pedidos/CancelarPedido") {
+                            redirAddress = "/Pedidos/MeusPedidos";
+                        }
+
+                        setTimeout(function () { window.location.href = redirAddress }, 1000);
                     } else {
-                        setTimeout(function () { window.location.href = "/Produtos" }, 1000);
+                        setTimeout(function () { window.location.href = "/Home" }, 1000);
                     }
                 } else {
                     $("#status").addClass("alert-warning");

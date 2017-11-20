@@ -26,16 +26,25 @@ namespace LojaVirtuall.Filters
                 {
                     if (GestaoUsuarios.VerificarStatusCliente() == null)
                     {
-                        // filtroContexto.RequestContext.HttpContext.Response.Redirect("/Home/Login");
-                        HttpContext.Current.Response.Redirect("/Home/Login");
+                        if (controller == "Pedidos" && action == "EmitirPedido")
+                        {
+                            HttpContext.Current.Response.Redirect("/Home/Login?redir=/Carrinho");
+                        }
+                        else if ((controller == "Pedidos" && action == "ExibirPedido") || (controller == "Pedidos" && action == "CancelarPedido"))
+                        {
+                            HttpContext.Current.Response.Redirect("/Home/Login?redir=/Pedidos/MeusPedidos");
+                        }
+                        else
+                        {
+                            HttpContext.Current.Response.Redirect("/Home/Login?redir=/" + controller + "/" + action);
+                        }
                     }
                 }
                 else
                 {
                     if (GestaoUsuarios.VerificarStatusAdministrador() == null)
                     {
-                        // filtroContexto.RequestContext.HttpContext.Response.Redirect("/Home/Login");
-                        HttpContext.Current.Response.Redirect("/Home/Login");
+                        HttpContext.Current.Response.Redirect("/Home/Login?redir=/" + controller + "/" + action);
                     }
                 }
             }
