@@ -16,7 +16,8 @@ namespace LojaVirtuall.Filters
                 (controller != "Produtos" || action != "Search"))
             {
 
-                if ((controller == "Clientes" && action == "ManageAccount"))
+                if ((controller == "Clientes" && action == "ManageAccount") ||
+                    (controller == "Clientes" && action == "ChangePassword"))
                 {
                     if (GestaoUsuarios.VerificarStatusCliente() == null)
                     {

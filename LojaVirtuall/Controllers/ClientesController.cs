@@ -7,6 +7,7 @@ using System.Web.UI;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Data.Entity.Migrations;
 
 namespace LojaVirtuall.Controllers
 {
@@ -105,6 +106,7 @@ namespace LojaVirtuall.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(cliente);
         }
 
@@ -124,6 +126,7 @@ namespace LojaVirtuall.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
             return View(cliente);
         }
 
@@ -131,10 +134,7 @@ namespace LojaVirtuall.Controllers
         public ActionResult ManageAccount()
         {
             int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
-
             Cliente cliente = db.Cliente.Find(id);
-            cliente.Senha = null;
-            cliente.ConfirmacaoSenha = null;
 
             if (cliente == null)
             {
@@ -147,20 +147,69 @@ namespace LojaVirtuall.Controllers
         // POST: Clientes/ManageAccount
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageAccount([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha")] Cliente cliente)
+        [IgnoreModelErrors("Senha, ConfirmacaoSenha, Ativo, CriadoEm")]
+        public ActionResult ManageAccount([Bind(Include = "UsuarioID, Nome, Email, Login")] Cliente cliente)
         {
             if (ModelState.IsValid)
             {
-                cliente.Senha = CalculateMD5String(cliente.Senha);
-                cliente.ConfirmacaoSenha = CalculateMD5String(cliente.ConfirmacaoSenha);
-                cliente.Ativo = true;
-                cliente.CriadoEm = DateTime.Now;
+                string novoNome = cliente.Nome;
+                string novoEmail = cliente.Email;
+                string novoLogin = cliente.Login;
+
+                cliente = db.Cliente.Find(cliente.UsuarioID);
+
+                cliente.Nome = novoNome;
+                cliente.Email = novoEmail;
+                cliente.Login = novoLogin;
                 cliente.ModificadoEm = DateTime.Now;
 
                 db.Entry(cliente).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
+
+            return View(cliente);
+        }
+
+        // GET: Clientes/ChangePassword
+        public ActionResult ChangePassword()
+        {
+            int id = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+            Cliente cliente = db.Cliente.Find(id);
+
+            cliente.Senha = null;
+            cliente.ConfirmacaoSenha = null;
+
+            if (cliente == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(cliente);
+        }
+
+        // POST: Clientes/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [IgnoreModelErrors("Nome, Email, Login, Ativo, CriadoEm")]
+        public ActionResult ChangePassword([Bind(Include = "UsuarioID, Senha, ConfirmacaoSenha")] Cliente cliente)
+        {
+            if (ModelState.IsValid)
+            {
+                string novaSenha = cliente.Senha;
+
+                cliente = db.Cliente.Find(cliente.UsuarioID);
+
+                cliente.Senha = CalculateMD5String(novaSenha);
+                cliente.ConfirmacaoSenha = CalculateMD5String(novaSenha);
+                cliente.ModificadoEm = DateTime.Now;
+
+                db.Entry(cliente).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(cliente);
         }
 

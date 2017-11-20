@@ -35,7 +35,14 @@
                         <li class="show-no-auth show-client">@Html.ActionLink("Carrinho", "Index", "Carrinho")</liclass="show-no-auth>
                         <li class="show-no-auth">@Html.ActionLink("Cadastro", "Register", "Clientes")</li>
                         <li class="show-no-auth">@Html.ActionLink("Login", "Login", "Home")</li>
-                        <li class="show-client">@Html.ActionLink("Conta", "ManageAccount", "Clientes")</li>
+                        <li class="dropdown show-client">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Conta<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="show-client">@Html.ActionLink("Editar Cadastro", "ManageAccount", "Clientes")</li>
+                                <li class="show-client">@Html.ActionLink("Alterar Senha", "ChangePassword", "Clientes")</li>
+                            </ul>
+                        </li>
+
                         <li id="logout" class="show-auth"><a>Sair</a></li>
                     </ul>
                 </div>

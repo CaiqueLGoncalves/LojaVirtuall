@@ -82,7 +82,7 @@
 
                 <div class="col-md-6">
                     @if (item.Quantidade > 0)
-                    {   
+                    {
                         <a href="/Carrinho/AdicionarProdutoCarrinho?produtoID=@item.ProdutoID&quantidade=1" class="btn btn-primary pull-right">Adicionar ao Carrinho</a>
                     }
                     else
@@ -95,101 +95,34 @@
     }
 </div>
 
-<!--
-<table id="tbProdutos" class="table table-striped">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descricao)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Preco)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantidade)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fornecedor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ativo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Descricao)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Preco).ToString()
-                </td>
-                <td class="text-right">
-                    @Html.DisplayFor(modelItem => item.Quantidade)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Categoria.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ativo)
-                    @(item.Ativo ? "Ativo" : "Inativo")
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Detalhes", "Details", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Excluir", "Delete", new { id = item.ProdutoID }, new { @class = "btn btn-default" })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
--->
 @section styles {
-    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet
     <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
 }
 
 @section scripts {
     <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-    <script type="te
-<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#tbProdutos").DataTable({
-            language: {
-                "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
-            },
-            responsive: true,
-            columns: [
-                { responsivePriority: 0 },
-                { responsivePriority: 4 },
-                { responsivePriority: 2 },
-                { responsivePriority: 3 },
-                { responsivePriority: 5 },
-                { responsivePriority: 6 },
-                { responsivePriority: 7 },
-                { responsivePriority: 1 }
-            ],
-            columnDefs: [
-                { orderable: false, targets: [7] }
-            ],
+    <script src="~/Scripts/BuscaProdutos.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tbProdutos").DataTable({
+                language: {
+                    "url": "https://cdn.datatables.net/plug-ins/1.10.16/i18n/Portuguese-Brasil.json"
+                },
+                responsive: true,
+                columns: [
+                    { responsivePriority: 0 },
+                    { responsivePriority: 4 },
+                    { responsivePriority: 2 },
+                    { responsivePriority: 3 },
+                    { responsivePriority: 5 },
+                    { responsivePriority: 6 },
+                    { responsivePriority: 7 },
+                    { responsivePriority: 1 }
+                ],
+                columnDefs: [
+                    { orderable: false, targets: [7] }
+                ],
+            });
         });
-    });
-</script>
+    </script>
 }
