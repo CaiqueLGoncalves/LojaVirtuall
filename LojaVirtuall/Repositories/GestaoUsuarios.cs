@@ -1,5 +1,6 @@
 ﻿using LojaVirtuall.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -137,6 +138,45 @@ namespace LojaVirtuall.Repositories
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public static bool VerificarDisponibilidadeEmail(string email)
+        {
+            Contexto db = new Contexto();
+
+            List<string> emailAdmin = (from a in db.Administrador select a.Email).ToList();
+            List<string> emailCliente = (from c in db.Cliente select c.Email).ToList();
+
+            var admin = emailAdmin.Any(e => e == email);
+            var cliente = emailCliente.Any(e => e == email);
+
+            if (admin || cliente)
+            {
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        public static bool VerificarDisponibilidadeLogin(string login)
+        {
+            Contexto db = new Contexto();
+
+            List<string> loginAdmin = (from a in db.Administrador select a.Login).ToList();
+            List<string> loginCliente = (from c in db.Cliente select c.Login).ToList();
+
+            var admin = loginAdmin.Any(e => e == login);
+            var cliente = loginCliente.Any(e => e == login);
+
+            if (admin || cliente)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 

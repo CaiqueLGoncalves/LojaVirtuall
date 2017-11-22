@@ -44,6 +44,7 @@ namespace LojaVirtuall.Controllers
             {
                 return View();
             }
+
             return null;
         }
 
@@ -52,6 +53,16 @@ namespace LojaVirtuall.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Cliente cliente)
         {
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(cliente.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(cliente.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 cliente.Senha = CalculateMD5String(cliente.Senha);
@@ -78,6 +89,16 @@ namespace LojaVirtuall.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha")] Cliente cliente)
         {
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(cliente.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(cliente.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 cliente.Senha = CalculateMD5String(cliente.Senha);
@@ -123,11 +144,24 @@ namespace LojaVirtuall.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Cliente cliente)
         {
+            string emailAtual = db.Cliente.Find(cliente.UsuarioID).Email;
+            string loginAtual = db.Cliente.Find(cliente.UsuarioID).Login;
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(cliente.Email) && !emailAtual.Equals(cliente.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(cliente.Login) && !loginAtual.Equals(cliente.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 cliente.Senha = CalculateMD5String(cliente.Senha);
                 cliente.ConfirmacaoSenha = CalculateMD5String(cliente.ConfirmacaoSenha);
-                cliente.CriadoEm = DateTime.Now;
+                cliente.CriadoEm = DateTime.Now; // Não conseguimos ajustar isto.
                 cliente.ModificadoEm = DateTime.Now;
 
                 db.Entry(cliente).State = EntityState.Modified;
@@ -163,6 +197,19 @@ namespace LojaVirtuall.Controllers
         [IgnoreModelErrors("Senha, ConfirmacaoSenha, Ativo, CriadoEm")]
         public ActionResult ManageAccount([Bind(Include = "UsuarioID, Nome, Email, Login")] Cliente cliente)
         {
+            string emailAtual = db.Cliente.Find(cliente.UsuarioID).Email;
+            string loginAtual = db.Cliente.Find(cliente.UsuarioID).Login;
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(cliente.Email) && !emailAtual.Equals(cliente.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(cliente.Login) && !loginAtual.Equals(cliente.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 string novoNome = cliente.Nome;
@@ -285,22 +332,6 @@ namespace LojaVirtuall.Controllers
             }
 
             return sb.ToString();
-        }
-
-        private bool VerificarDisponibilidadeEmail(string email)
-        {
-            var admin = db.Administrador.Where(c => c.Email == email);
-            var cliente = db.Cliente.Where(c => c.Email == email);
-
-            return (admin == null && cliente == null);
-        }
-
-        private bool VerificarDisponibilidadeLogin(string login)
-        {
-            var admin = db.Administrador.Where(c => c.Login == login);
-            var cliente = db.Cliente.Where(c => c.Login == login);
-
-            return (admin == null && cliente == null);
         }
     }
 }

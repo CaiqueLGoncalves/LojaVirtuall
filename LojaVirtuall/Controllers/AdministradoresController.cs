@@ -52,6 +52,16 @@ namespace LojaVirtuall.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Administrador administrador)
         {
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(administrador.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(administrador.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 administrador.Senha = CalculateMD5String(administrador.Senha);
@@ -78,6 +88,16 @@ namespace LojaVirtuall.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha")] Administrador administrador)
         {
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(administrador.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(administrador.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 administrador.Senha = CalculateMD5String(administrador.Senha);
@@ -122,11 +142,24 @@ namespace LojaVirtuall.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UsuarioID, Nome, Email, Login, Senha, ConfirmacaoSenha, Ativo")] Administrador administrador)
         {
+            string emailAtual = db.Administrador.Find(administrador.UsuarioID).Email;
+            string loginAtual = db.Administrador.Find(administrador.UsuarioID).Login;
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeEmail(administrador.Email) && !emailAtual.Equals(administrador.Email))
+            {
+                ModelState.AddModelError("Email", "Este e-mail já está cadastrado no sistema.");
+            }
+
+            if (!GestaoUsuarios.VerificarDisponibilidadeLogin(administrador.Login) && !loginAtual.Equals(administrador.Login))
+            {
+                ModelState.AddModelError("Login", "Este login já está sendo utilizado.");
+            }
+
             if (ModelState.IsValid)
             {
                 administrador.Senha = CalculateMD5String(administrador.Senha);
                 administrador.ConfirmacaoSenha = CalculateMD5String(administrador.ConfirmacaoSenha);
-                administrador.CriadoEm = DateTime.Now;
+                administrador.CriadoEm = DateTime.Now; // Não conseguimos ajustar isto.
                 administrador.ModificadoEm = DateTime.Now;
 
                 db.Entry(administrador).State = EntityState.Modified;
@@ -190,22 +223,6 @@ namespace LojaVirtuall.Controllers
             }
 
             return sb.ToString();
-        }
-
-        private bool VerificarDisponibilidadeEmail(string email)
-        {
-            var admin = db.Administrador.Where(c => c.Email == email);
-            var cliente = db.Cliente.Where(c => c.Email == email);
-
-            return (admin == null && cliente == null);
-        }
-
-        private bool VerificarDisponibilidadeLogin(string login)
-        {
-            var admin = db.Administrador.Where(c => c.Login == login);
-            var cliente = db.Cliente.Where(c => c.Login == login);
-
-            return (admin == null && cliente == null);
         }
     }
 }

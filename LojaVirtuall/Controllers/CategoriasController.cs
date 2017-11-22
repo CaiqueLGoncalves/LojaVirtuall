@@ -95,9 +95,9 @@ namespace LojaVirtuall.Controllers
             {
                 int idUser = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
 
-                categoria.CriadoEm = DateTime.Now; // Alterar
+                categoria.CriadoEm = DateTime.Now; // Não conseguimos ajustar isto.
                 categoria.ModificadoEm = DateTime.Now;
-                categoria.CriadoPor = db.Administrador.Find(idUser); // Alterar
+                categoria.CriadoPor = db.Administrador.Find(idUser); // Não conseguimos ajustar isto.
                 categoria.ModificadoPor = db.Administrador.Find(idUser);
 
                 db.Entry(categoria).State = EntityState.Modified;

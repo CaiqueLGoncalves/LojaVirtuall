@@ -24,7 +24,7 @@
 
                     var redirAddress = $("#redirAddress").val();
 
-                    if (redirAddress != null || redirAddress != "") {
+                    if (redirAddress != null && redirAddress != "" && typeof (redirAddress) != "undefined") {
 
                         if (redirAddress == "/Pedidos/EmitirPedido") {
                             redirAddress = "/Carrinho";

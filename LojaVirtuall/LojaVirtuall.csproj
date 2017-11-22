@@ -488,9 +488,7 @@
     <Content Include="Views\Produtos\Search.cshtml" />
     <Content Include="Views\Carrinho\Index.cshtml" />
     <Content Include="Views\Clientes\ChangePassword.cshtml" />
-    <Content Include="Views\Pedidos\Delete.cshtml" />
     <Content Include="Views\Pedidos\Details.cshtml" />
-    <Content Include="Views\Pedidos\Edit.cshtml" />
     <Content Include="Views\Pedidos\Index.cshtml" />
     <Content Include="Views\Pedidos\ExibirPedido.cshtml" />
     <Content Include="Views\Pedidos\MeusPedidos.cshtml" />

@@ -24,11 +24,18 @@
                     <ul class="nav navbar-nav">
                         <li class="show-no-auth show-client">@Html.ActionLink("Nossos Produtos", "Search", "Produtos")</li>
 
+                        <li class="dropdown show-admin">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuários<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="show-admin">@Html.ActionLink("Clientes", "Index", "Clientes")</li>
+                                <li class="show-admin">@Html.ActionLink("Administradores", "Index", "Administradores")</li>
+                            </ul>
+                        </li>
+                        
+                        <li class="show-admin">@Html.ActionLink("Pedidos", "Index", "Pedidos")</li>
                         <li class="show-admin">@Html.ActionLink("Produtos", "Index", "Produtos")</li>
-                        <li class="show-admin">@Html.ActionLink("Fornecedores", "Index", "Fornecedores")</li>
                         <li class="show-admin">@Html.ActionLink("Categorias", "Index", "Categorias")</li>
-                        <li class="show-admin">@Html.ActionLink("Administradores", "Index", "Administradores")</li>
-                        <li class="show-admin">@Html.ActionLink("Clientes", "Index", "Clientes")</li>
+                        <li class="show-admin">@Html.ActionLink("Fornecedores", "Index", "Fornecedores")</li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">

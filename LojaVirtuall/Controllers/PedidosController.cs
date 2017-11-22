@@ -33,7 +33,7 @@ namespace LojaVirtuall.Controllers
                     novoPedido.Cliente = db.Cliente.Find(novoPedido.UsuarioID);
                     novoPedido.Ativo = true;
                     novoPedido.ModificadoEm = null;
-                    novoPedido.ModificadorPor = null;
+                    novoPedido.ModificadoPor = null;
 
                     db.Pedido.Add(novoPedido);
                     db.SaveChanges();
@@ -176,84 +176,67 @@ namespace LojaVirtuall.Controllers
             return null;
         }
 
-        // GET: Pedidos
         public ActionResult Index()
         {
-            var pedido = db.Pedido.Include(p => p.Cliente).Include(p => p.ModificadorPor);
+            var pedido = db.Pedido.Include(p => p.Cliente);
             return View(pedido.ToList());
         }
 
-        // GET: Pedidos/Details/5
         public ActionResult Details(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Pedido pedido = db.Pedido.Find(id);
+
             if (pedido == null)
             {
                 return HttpNotFound();
             }
+
+            pedido.Cliente = db.Cliente.Find(pedido.UsuarioID);
+
+            foreach (var item in pedido.Itens)
+            {
+                item.Produto = db.Produto.Find(item.ProdutoID);
+            }
+
             return View(pedido);
         }
 
-        // GET: Pedidos/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Pedido pedido = db.Pedido.Find(id);
-            if (pedido == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.UsuarioID = new SelectList(db.Cliente, "UsuarioID", "Nome", pedido.UsuarioID);
-            ViewBag.UsuarioID = new SelectList(db.Administrador, "UsuarioID", "Nome", pedido.UsuarioID);
-            return View(pedido);
-        }
-
-        // POST: Pedidos/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PedidoID,DataPedido,UsuarioID,Ativo,ModificadoEm")] Pedido pedido)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(pedido).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.UsuarioID = new SelectList(db.Cliente, "UsuarioID", "Nome", pedido.UsuarioID);
-            ViewBag.UsuarioID = new SelectList(db.Administrador, "UsuarioID", "Nome", pedido.UsuarioID);
-            return View(pedido);
-        }
-
-        // GET: Pedidos/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Pedido pedido = db.Pedido.Find(id);
-            if (pedido == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pedido);
-        }
-
-        // POST: Pedidos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult CancelOrder(int id)
         {
             Pedido pedido = db.Pedido.Find(id);
-            db.Pedido.Remove(pedido);
-            db.SaveChanges();
+
+            if (pedido.Ativo)
+            {
+                int idAdmin = Convert.ToInt32(System.Web.HttpContext.Current.Session["ID"].ToString());
+                Administrador admin = db.Administrador.Find(idAdmin);
+
+                // Desativar o Pedido
+                pedido.Ativo = false;
+                pedido.ModificadoEm = DateTime.Now;
+                pedido.ModificadoPor = admin.Nome;
+                db.Pedido.AddOrUpdate(pedido);
+                int resultado = db.SaveChanges();
+
+                if (resultado > 0)
+                {
+                    foreach (var item in pedido.Itens)
+                    {
+                        Produto produto = db.Produto.Find(item.ProdutoID);
+                        produto.Quantidade += item.Quantidade;
+                        produto.ModificadoEm = DateTime.Now;
+                        produto.ModificadoPor = admin;
+                        db.Produto.AddOrUpdate(produto);
+                        db.SaveChanges();
+                    }     
+                }
+            }
+
             return RedirectToAction("Index");
         }
 

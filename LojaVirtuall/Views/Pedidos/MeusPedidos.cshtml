@@ -47,11 +47,11 @@
 
                 @{
                     int quantidade = 0;
-                }
 
-                @foreach (var it in item.Itens)
-                {
-                    quantidade += it.Quantidade;
+                    foreach (var it in item.Itens)
+                    {
+                        quantidade += it.Quantidade;
+                    }
                 }
 
                 <td>
@@ -60,7 +60,7 @@
 
                 <td>
                     @if (item.Ativo)
-                {
+                    {
                         <span class="label label-success">OK</span>
                     }
                     else

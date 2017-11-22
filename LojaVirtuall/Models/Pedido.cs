@@ -29,8 +29,7 @@ namespace LojaVirtuall.Models
         [DisplayName("Modificado Em")]
         public DateTime? ModificadoEm { get; set; }
 
-        [DataType(DataType.DateTime)]
         [DisplayName("Modificado Por")]
-        public Administrador ModificadorPor { get; set; }
+        public string ModificadoPor { get; set; }
     }
 }

@@ -11,17 +11,25 @@
     <thead>
         <tr>
             <th>
+                Nº do Pedido
+            </th>
+
+            <th>
                 @Html.DisplayNameFor(model => model.DataPedido)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Cliente)
             </th>
+
             <th>
-                Quantidade de Itens
+                Qtde. de Itens
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Ativo)
             </th>
+
             <th></th>
         </tr>
     </thead>
@@ -31,22 +39,44 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.PedidoID)
+                </td>
+
+                <td>
                     @Html.DisplayFor(modelItem => item.DataPedido)
                 </td>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.Cliente.Nome)
                 </td>
+
+                @{
+                    int quantidade = 0;
+
+                    foreach (var it in item.Itens)
+                    {
+                        quantidade += it.Quantidade;
+                    }
+                }
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Itens.Count)
+                    @quantidade
                 </td>
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ativo)
-                    @(item.Ativo ? "OK" : "Cancelado")
+                    @if (item.Ativo)
+                    {
+                        <span class="label label-success">OK</span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger">Cancelado</span>
+                    }
                 </td>
+
                 <td>
-                    @Html.ActionLink("Editar", "Edit", new { id = item.PedidoID }, new { @class = "btn btn-default" })
                     @Html.ActionLink("Detalhes", "Details", new { id = item.PedidoID }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Excluir", "Delete", new { id = item.PedidoID }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Cancelar Pedido", "CancelOrder", new { id = item.PedidoID }, new { @class = "btn btn-default" })
                 </td>
             </tr>
         }
@@ -68,13 +98,14 @@
                 responsive: true,
                 columns: [
                     { responsivePriority: 0 },
-                    { responsivePriority: 1 },
+                    { responsivePriority: 2 },
                     { responsivePriority: 3 },
+                    { responsivePriority: 5 },
                     { responsivePriority: 4 },
-                    { responsivePriority: 2 }
+                    { responsivePriority: 1 }
                 ],
                 columnDefs: [
-                    { orderable: false, targets: [4] }
+                    { orderable: false, targets: [5] }
                 ],
             });
         });
