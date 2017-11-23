@@ -338,6 +338,14 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\Images\img01-supermario.jpg" />
+    <Content Include="Content\Images\img02-sonic.jpg" />
+    <Content Include="Content\Images\img03-pacman.png" />
+    <Content Include="Content\Images\img04-donkeykong.jpg" />
+    <Content Include="Content\Images\img05-fifa.jpg" />
+    <Content Include="Content\Images\pikachu.png" />
+    <Content Include="Content\Images\race.png" />
+    <Content Include="Content\Images\super-mario.png" />
     <Content Include="Content\jAlert.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
