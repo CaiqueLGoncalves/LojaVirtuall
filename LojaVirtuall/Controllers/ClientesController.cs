@@ -278,37 +278,6 @@ namespace LojaVirtuall.Controllers
             return View(cliente);
         }
 
-        // GET: Clientes/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                Cliente cliente = db.Cliente.Find(id);
-                if (cliente == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(cliente);
-            }
-
-            return null;
-        }
-
-        // POST: Clientes/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Cliente cliente = db.Cliente.Find(id);
-            db.Cliente.Remove(cliente);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

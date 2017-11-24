@@ -223,42 +223,6 @@ namespace LojaVirtuall.Controllers
             return View(produto);
         }
 
-        // GET: Produtos/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                Produto produto = db.Produto.Find(id);
-                if (produto == null)
-                {
-                    return HttpNotFound();
-                }
-                else
-                {
-                    produto.Categoria = db.Categoria.Find(produto.CategoriaID);
-                    produto.Fornecedor = db.Fornecedor.Find(produto.FornecedorID);
-                }
-                return View(produto);
-            }
-
-            return null;
-        }
-
-        // POST: Produtos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Produto produto = db.Produto.Find(id);
-            db.Produto.Remove(produto);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

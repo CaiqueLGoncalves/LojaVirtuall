@@ -169,37 +169,6 @@ namespace LojaVirtuall.Controllers
             return View(administrador);
         }
 
-        // GET: Administradores/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                Administrador administrador = db.Administrador.Find(id);
-                if (administrador == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(administrador);
-            }
-
-            return null;
-        }
-
-        // POST: Administradores/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Administrador administrador = db.Administrador.Find(id);
-            db.Administrador.Remove(administrador);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

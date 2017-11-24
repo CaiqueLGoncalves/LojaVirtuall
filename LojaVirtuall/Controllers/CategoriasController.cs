@@ -107,37 +107,6 @@ namespace LojaVirtuall.Controllers
             return View(categoria);
         }
 
-        // GET: Categorias/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (GestaoUsuarios.VerificarStatusAdministrador() != null)
-            {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                Categoria categoria = db.Categoria.Find(id);
-                if (categoria == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(categoria);
-            }
-
-            return null;
-        }
-
-        // POST: Categorias/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Categoria categoria = db.Categoria.Find(id);
-            db.Categoria.Remove(categoria);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
